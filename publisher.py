@@ -4,16 +4,15 @@ from subprocess import call
 
 import properties as p
 
-# argv
-# argv[1] - base dir
-# argv[2] - filename
+# argv[1] - 'copy' or 'move'
+# argv[2] - base dir
+# argv[3] - filename
 
 def get_interface_ip(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s',
                                 ifname[:15]))[20:24])
 
-# target link
 link = p.protocol + '://'
 if p.get_ip_from is 'properties':
 	link += p.ip
@@ -23,9 +22,7 @@ elif p.get_ip_from is 'system':
 if p.enable_port:
 	link += ':' + str(p.port)
 
-link += '/public/'
-
-link += sys.argv[3]
+link += '/public/' + sys.argv[3]
 
 if len(sys.argv) is 4:
 	if sys.argv[1] == 'copy':
@@ -35,5 +32,4 @@ if len(sys.argv) is 4:
 else:
 	exit()
 
-# sudo apt-get install xclip
-pyperclip.setcb(link)
+pyperclip.setcb(link.replace(' ', '%20'))
