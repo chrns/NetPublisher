@@ -13,3 +13,5 @@ protocol='http'
 enable_port=False
 # port (optional)
 port=80
+# enable notify
+notify=True

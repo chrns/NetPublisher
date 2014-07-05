@@ -1,12 +1,19 @@
-import os, socket, fcntl, struct, sys
-import pyperclip
+# -*- coding: utf-8 -*-
+import os, socket, fcntl, struct, sys, subprocess
 from subprocess import call
+import pyperclip
 
 import properties as p
 
 # argv[1] - 'copy' or 'move'
 # argv[2] - base dir
 # argv[3] - filename
+
+title = 'Ссылка скопирована в буфер обмена'
+
+def sendmessage(message):
+    subprocess.Popen(['notify-send', title, message])
+    return
 
 def get_interface_ip(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -33,3 +40,6 @@ else:
 	exit()
 
 pyperclip.setcb(link.replace(' ', '%20'))
+
+if p.notify:
+	sendmessage(link)
